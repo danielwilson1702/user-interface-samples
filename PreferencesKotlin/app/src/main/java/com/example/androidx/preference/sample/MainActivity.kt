@@ -17,7 +17,11 @@
 package com.example.androidx.preference.sample
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.DropDownPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 
@@ -105,6 +109,14 @@ class MainActivity : AppCompatActivity(),
     class WidgetPreferencesFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.widgets, rootKey)
+
+            val preference = findPreference<DropDownPreference>("dropdown")
+            preference?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { pref, newValue ->
+                Toast.makeText(context,
+                        "Dropdown change listener fired when the preference is first drawn. adb shell pm clear to repro.",
+                        Toast.LENGTH_LONG).show()
+                true
+            }
         }
     }
 
